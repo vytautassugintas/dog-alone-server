@@ -1,0 +1,19 @@
+{
+  "name": "dog-alone-server",
+  "version": "1.0.0",
+  "description": "dog alone server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vytautassugintas/dog-alone-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vytautassugintas/dog-alone-server/issues"
+  },
+  "homepage": "https://github.com/vytautassugintas/dog-alone-server#readme"
+}
