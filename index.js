@@ -1,6 +1,13 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const moment = require('moment');
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync('db.json')
+const db = low(adapter)
+
+db.defaults({ decibels: []}).write()
 
 const {
     addClient,
@@ -19,6 +26,15 @@ io.on('connection', socket => {
 
     socket.on('decibelIncrease', (data = {}) => {
         const { dbLevel } = data;
+        const date = moment();
+        db.get('decibels')
+            .push({ 
+                dbLevel: dbLevel,
+                date: date.format('x'),
+                displayDate: date.format('MMMM Do YYYY, h:mm:ss a'),
+            })
+            .write()
+
         // it should send data to specfic client, that was saved earlier
         // but as I'm the only client now its ok to broadcast to all
         socket.broadcast.emit('decibelIncreased', {
