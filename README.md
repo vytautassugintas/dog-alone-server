@@ -1,7 +1,11 @@
 # dog-alone-server
 
-when one of the clients emits `decibelIncrease`
-server will fire `decibelIncreased` to all clients
+server uses [socket.io](https://socket.io/)
 
-client fires -> `decibelIncrease` 
-server fires -> `decibelIncreased` 
+one of the clients emits -> `decibelIncrease`
+
+then
+
+server fires -> `decibelIncreased` to all clients
+
+client sandbox: https://amritb.github.io/socketio-client-tool/#url=aHR0cDovL2xvY2FsaG9zdDozMDAwLw==&opt=&events=,decibelIncrease,decibelIncreased
