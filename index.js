@@ -17,7 +17,9 @@ io.on('connection', socket => {
     socket.on('decibelIncrease', (data = {}) => {
         const { dbLevel } = data;
         saveDecibels({dbLevel});
-        socket.broadcast.emit('decibelIncreased', {
+        
+        io.emit('decibelIncreased', {
+            dbLevel,
             message: `current dB level ${dbLevel}`
         });
     });
