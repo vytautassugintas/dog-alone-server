@@ -8,18 +8,21 @@ db.defaults({ decibels: []}).write()
 
 const saveDecibels = ({ dbLevel }) => {
   const date = moment();
-  db.get('decibels').push({
+  db.get('decibels').unshift({
       dbLevel: dbLevel,
       date: date.format('x'),
       displayDate: date.format('MMMM Do YYYY, h:mm:ss a'),
   }).write();
 }
 
+const getLastDecibelRecord = () => db.get('decibels').first().value()
+
 const getDecibels = () => {
-  return db.get('decibels').values();
+  return db.get('decibels').value();
 }
 
 module.exports = {
   saveDecibels,
   getDecibels,
+  getLastDecibelRecord,
 }

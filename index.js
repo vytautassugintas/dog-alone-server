@@ -1,7 +1,7 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const { saveDecibels } = require('./src/decibelsRepository');
+const { saveDecibels, getDecibels, getLastDecibelRecord } = require('./src/decibelsRepository');
 const { addClient, removeClient } = require('./src/clients');
 
 const PORT = process.env.PORT || 3000;
@@ -14,14 +14,15 @@ io.on('connection', socket => {
         removeClient(client.id);
     });
 
+    socket.emit('decibelsLog', {
+      history: getDecibels().slice(0, 50)
+    });
+
     socket.on('decibelIncrease', (data = {}) => {
         const { dbLevel } = data;
         saveDecibels({dbLevel});
-        
-        io.emit('decibelIncreased', {
-            dbLevel,
-            message: `current dB level ${dbLevel}`
-        });
+       
+        io.emit('decibelIncreased', getLastDecibelRecord());
     });
 });
 
