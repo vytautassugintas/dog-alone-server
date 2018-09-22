@@ -10,7 +10,7 @@ const saveDecibels = ({ dbLevel }) => {
   const date = moment();
   db.get('decibels').unshift({
       dbLevel: dbLevel,
-      date: date.format('x'),
+      date: date.valueOf(),
       displayDate: date.format('MMMM Do YYYY, h:mm:ss a'),
   }).write();
 }
