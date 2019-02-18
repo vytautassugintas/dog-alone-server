@@ -1,7 +1,7 @@
 const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
-const os = require("os");
+
 const {
   saveDecibels,
   getDecibels,
@@ -9,45 +9,24 @@ const {
 } = require("./src/decibelsRepository");
 const { addClient, removeClient } = require("./src/clients");
 
+const fs = require("fs");
+const path = require("path");
+
 const graphqlHTTP = require("express-graphql");
 const { buildSchema } = require("graphql");
 
 const PORT = process.env.PORT || 3000;
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || "/graphql";
 
-const schema = buildSchema(`
-  type Query {
-    hello: String
-    host: Host
-  }
-
-  type Host {
-    hostname: String
-    ip: String
-  }
-`);
-
-function getIPv4Address({ networkInterfaces }) {
-  if (!networkInterfaces.en0) {
-    // not a mac
-    return "0";
-  }
-
-  const eth = networkInterfaces.en0;
-  const IPv4 = eth.find(version => version.family === "IPv4");
-  return (IPv4 && IPv4.address) || "0";
-}
+const schema = buildSchema(
+  fs.readFileSync(path.resolve(__dirname, "./src/schema.graphql"), "utf8")
+);
 
 const root = {
   hello: () => {
     return "Hello world!";
   },
-  host: () => {
-    return {
-      hostname: os.hostname(),
-      ip: getIPv4Address({ networkInterfaces: os.networkInterfaces() })
-    };
-  }
+  host: require("./src/resolvers/host")
 };
 
 app.use(

@@ -1,0 +1,12 @@
+type Query {
+  hello: String
+  host: Host
+}
+
+"Describes server host"
+type Host {
+  "Server machine name"
+  hostname: String
+  "Server machine IPv4 address"
+  ip: String
+}
