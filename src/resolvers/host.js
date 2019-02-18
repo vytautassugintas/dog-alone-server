@@ -1,23 +1,36 @@
 const os = require("os");
 
 const ETH_IPV4_FAMILY_NAME = "IPv4";
+const ETH_IPV6_FAMILY_NAME = "IPv6";
 
-function getIPv4Address({ networkInterfaces }) {
-  const eth = networkInterfaces.en0 || networkInterfaces.eth0;
+function getIPAddress({ versionName }) {
+  const interfaces = os.networkInterfaces();
 
-  if (!eth) {
+  if (!interfaces) {
     return null;
   }
 
-  const IPv4 = eth.find(version => version.family === ETH_IPV4_FAMILY_NAME);
+  for (key in interfaces) {
+    const interface = interfaces[key];
 
-  return (IPv4 && IPv4.address) || "0";
+    const isEligibleInterface = version =>
+      version && !version.internal && version.family === versionName;
+
+    const eligibleInterface = interface.find(isEligibleInterface);
+
+    if (eligibleInterface) {
+      return eligibleInterface.address;
+    }
+  }
+
+  return null;
 }
 
 function host() {
   return {
     hostname: os.hostname(),
-    ip: getIPv4Address({ networkInterfaces: os.networkInterfaces() })
+    ipv4: getIPAddress({ versionName: ETH_IPV4_FAMILY_NAME }),
+    ipv6: getIPAddress({ versionName: ETH_IPV6_FAMILY_NAME })
   };
 }
 

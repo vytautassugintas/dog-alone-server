@@ -8,5 +8,7 @@ type Host {
   "Server machine name"
   hostname: String
   "Server machine IPv4 address"
-  ip: String
+  ipv4: String
+  "Server machine IPv6 address"
+  ipv6: String
 }
