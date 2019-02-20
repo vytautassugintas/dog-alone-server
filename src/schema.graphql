@@ -1,6 +1,8 @@
 type Query {
   hello: String
   host: Host
+  decibel: Decibel
+  decibels(count: Int): [Decibel]
 }
 
 "Describes server host"
@@ -11,4 +13,11 @@ type Host {
   ipv4: String
   "Server machine IPv6 address"
   ipv6: String
+}
+
+"Describes recording volume level and when recording time"
+type Decibel {
+  dbLevel: Float
+  date: String
+  displayDate: String
 }

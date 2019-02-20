@@ -22,11 +22,15 @@ const schema = buildSchema(
   fs.readFileSync(path.resolve(__dirname, "./src/schema.graphql"), "utf8")
 );
 
+const { decibels } = require("./src/resolvers/decibel");
+
 const root = {
   hello: () => {
     return "Hello world!";
   },
-  host: require("./src/resolvers/host")
+  host: require("./src/resolvers/host"),
+  decible: require("./src/resolvers/decibel"),
+  decibels: decibels
 };
 
 app.use(
