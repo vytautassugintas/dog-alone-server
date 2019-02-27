@@ -45,13 +45,13 @@ app.use(
 io.on("connection", socket => {
   const { client } = socket;
   addClient(client.id);
-
+  console.log("connected");
   socket.on("disconnect", () => {
     removeClient(client.id);
   });
 
   socket.emit("decibelsLog", {
-    history: getDecibels().slice(0, 50)
+    history: getDecibels({ count: 10 })
   });
 
   socket.on("decibelIncrease", (data = {}) => {
